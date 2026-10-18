@@ -5,48 +5,13 @@
     ini_set('display_startup_errors', '1');
     error_reporting(E_ALL);
 
-    // Application entry point.
-    header('Content-Type: text/html; charset=utf-8');
-
-    // Database configuration
-    $host = 'localhost'; // use 'MySql' if that's your Docker service name
-    $db   = 'to_do_list';
-    $user = 'root';
-    $pass = '##########';
-
-    // Throw exceptions on mysqli errors (default in PHP 8.1+, explicit here)
-    mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
-
-    try {
-        $conn = mysqli_connect($host, $user, $pass, $db);
-        mysqli_set_charset($conn, 'utf8mb4');
-    } catch (mysqli_sql_exception $e) {
-        die('Database connection failed: ' . htmlspecialchars($e->getMessage()));
-    }
+    // Database connection ($conn)
+    require_once __DIR__ . '/db.php';
 
     // TEMPORARY: replace with the logged-in user from $_SESSION once login works
     $user_id = 1;
     $name    = 'Test';
-
-    $searchQuery = trim((string)($_GET['Query_name'] ?? ''));
-
-    // Helper: show "—" for NULL/empty values
-    function show(?string $value): string
-    {
-        return ($value === null || $value === '') ? '—' : htmlspecialchars($value);
-    }
-
-    // Helper: format a MySQL DATE (YYYY-MM-DD) as DD/MM/YYYY
-    function formatDate(?string $date): string
-    {
-        if ($date === null || $date === '' || $date === '0000-00-00') {
-            return '—';
-        }
-        $d = DateTime::createFromFormat('Y-m-d', $date);
-        return $d ? $d->format('d/m/Y') : htmlspecialchars($date);
-    }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -55,15 +20,16 @@
     <title>Task Flow</title>
 
     <link rel="stylesheet" href="style.css">
-    <nav class="nav-bar">
-        <div class="logo">Task Flow</div>
-        <div class="nav-links">
-            <a href="index.php">Home</a>
-            <a href="account.php">Account</a>
-        </div>
-    </nav> 
 </head>
 <body>
+
+<nav class="nav-bar">
+    <div class="logo">Task Flow</div>
+    <div class="nav-links">
+        <a href="index.php">Home</a>
+        <a href="account.php">Account</a>
+    </div>
+</nav>
 
 <div class="content">
     <h1>Good Morning, <?php echo htmlspecialchars($name); ?></h1>
