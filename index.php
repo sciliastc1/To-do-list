@@ -75,7 +75,22 @@
         echo '<p>No tasks found. Add a new task to get started!</p>';
     }
     ?>
-    <a href="add_task.php" class="add-task-button">Add New Task</a>
+    <button class="add-task-button" onclick="window.location.href='index.php?action=add'">
+        Add New Task
+    </button>  
+
+    <?php
+        // Include the create_task.php form
+        if(isset($_GET['action']) && $_GET['action'] === 'add') {
+            include 'create_task.php';
+            
+        }
+    ?>
+    <?php
+    // Close the database connection
+    $stmt->close();
+    $conn->close();
+    ?>
 </div>
 </body>
 
