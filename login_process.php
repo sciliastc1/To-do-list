@@ -12,18 +12,18 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-$username = trim($_POST['username'] ?? '');
-$password = $_POST['password']      ?? '';
+$name     = trim($_POST['name'] ?? '');
+$password = $_POST['password'] ?? '';
 
 // Basic presence check
-if ($username === '' || $password === '') {
+if ($name === '' || $password === '') {
     header('Location: login.php?error=missing');
     exit;
 }
 
-// Look up the user by username
-$stmt = $conn->prepare("SELECT id, password_hash FROM users WHERE username = ? LIMIT 1");
-$stmt->bind_param('s', $username);
+// Look up the user by name
+$stmt = $conn->prepare("SELECT id, password_hash FROM users WHERE name = ? LIMIT 1");
+$stmt->bind_param('s', $name);
 $stmt->execute();
 $stmt->store_result();
 
@@ -48,8 +48,8 @@ if (!password_verify($password, $password_hash)) {
 
 // Password is correct — create the session
 session_regenerate_id(true); // prevent session fixation
-$_SESSION['user_id']  = $user_id;
-$_SESSION['username'] = $username;
+$_SESSION['user_id'] = $user_id;
+$_SESSION['name']    = $name;
 
 header('Location: index.php');
 exit;

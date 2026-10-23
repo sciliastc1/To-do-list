@@ -15,8 +15,8 @@
         <?php endif; ?>
 
         <form action="login_process.php" method="POST" class="task-form">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
 
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required>

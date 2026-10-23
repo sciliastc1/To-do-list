@@ -1,4 +1,12 @@
-<link rel="stylesheet" href="style.css">
+<?php declare(strict_types=1); ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account - Task Flow</title>
+    <link rel="stylesheet" href="style.css">
+</head>
 <body>
     <div class="login-container">
         <h2>Create Account</h2>
@@ -14,9 +22,9 @@
         <?php endif; ?>
 
         <form action="register_process.php" method="POST" class="task-form">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required
-                   value="<?php echo htmlspecialchars($_GET['username'] ?? ''); ?>">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required
+                   value="<?php echo htmlspecialchars($_GET['name'] ?? ''); ?>">
 
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" required
@@ -34,5 +42,4 @@
         <p>Already have an account? <a href="login.php">Log in</a></p>
     </div>
 </body>
-
-
+</html>
