@@ -27,18 +27,18 @@ html {
     color: var(--text);
 }
 
-.nav-bar {
+.navbar {
     background-color: var(--surface);
     border-bottom: 1px solid var(--border);
 }
 
-.nav-bar a {
+.navbar a {
     color: var(--text);
     text-decoration: none;
     font-weight: 500;
 }
 
-.nav-links a:hover {
+.navbar_links a:hover {
     color: var(--primary-hover);
 }
 
@@ -54,7 +54,7 @@ html {
 .btn:hover {
     box-shadow: var(--glow);
 }
-.nav-bar {
+.navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -64,18 +64,18 @@ html {
     margin: calc(-1 * var(--page-padding)) calc(-1 * var(--page-padding)) var(--page-padding);
 }
 
-.nav-bar a {
+.navbar a {
     text-decoration: none;
     color: var(--text);
 }
-.nav-links {
+.navbar_links {
     display: flex;
     gap: 15px;
 }
-.nav-links a:hover {
+.navbar_links a:hover {
     color: var(--primary-hover);
 }
-.cards-container {
+.dashboard-cards {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -83,7 +83,7 @@ html {
     margin-top: 20px;
 }
 
-.card {
+.dashboard-card {
     flex: 1 1 0;
     min-width: 0;
     background-color: var(--surface);
@@ -92,24 +92,24 @@ html {
     padding: 20px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(59, 130, 246, 0.05);
 }
-.card:hover {
+.dashboard-card:hover {
     box-shadow: var(--glow);
 }
-.card a {
+.dashboard-card a {
     color: var(--primary);
     text-decoration: none;
 }
-.card a:hover {
+.dashboard-card a:hover {
     color: var(--primary-hover);
 }
-.task-container {
+.todo-section {
     margin-top: 40px;
     background-color: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius);
     padding: 20px;
 }
-.task-container .add-task-button {
+.todo-section .btn-add-task {
     margin-top: 20px;
     text-decoration: none;
     background-color: var(--primary);
@@ -119,43 +119,43 @@ html {
     padding: 10px 18px;
     font-weight: 600;
 }
-.task-container .add-task-button:hover {
+.todo-section .btn-add-task:hover {
     box-shadow: var(--glow);
 }
-.create-task-container{
+.task-form-section{
     margin-top: 40px;
     background-color: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius);
     padding: 20px;
 }
-.create-task-container .task-form {
+.task-form-section .app-form {
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
-.create-task-container .task-form label {
+.task-form-section .app-form label {
     font-weight: 500;
 }
-.task-form input[type="text"],
-.task-form input[type="email"],
-.task-form input[type="password"],
-.task-form textarea {
+.app-form input[type="text"],
+.app-form input[type="email"],
+.app-form input[type="password"],
+.app-form textarea {
     padding: 10px;
     border: 1px solid var(--border);
     border-radius: var(--radius);
     background-color: var(--surface-raised);
     color: var(--text);
 }
-.task-form input[type="text"]:focus,
-.task-form input[type="email"]:focus,
-.task-form input[type="password"]:focus,
-.task-form textarea:focus {
+.app-form input[type="text"]:focus,
+.app-form input[type="email"]:focus,
+.app-form input[type="password"]:focus,
+.app-form textarea:focus {
     outline: none;
     border-color: var(--primary);
     box-shadow: var(--glow);
 }
-.create-task-container .task-form button {
+.task-form-section .app-form button {
     background-color: var(--primary);
     color: #0b1120;
     border: none;
@@ -163,18 +163,18 @@ html {
     padding: 10px 18px;
     font-weight: 600;
 }
-.create-task-container .task-form button:hover {
+.task-form-section .app-form button:hover {
     box-shadow: var(--glow);
 }   
 
-.create-task-container .task-form .input-bar {
+.task-form-section .app-form .form_textarea {
     color: var(--text);
     background-color: var(--surface-raised);
     border: 1px solid var(--border);
     border-radius: var(--radius);
     padding: 10px;
 }
-.create-task-container .task-form .select-input {
+.task-form-section .app-form .form_select {
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -185,12 +185,12 @@ html {
     border-radius: var(--radius);
     color: var(--text);
 }
-.create-task-container .task-form .select-input:focus {
+.task-form-section .app-form .form_select:focus {
     outline: none;
     border-color: var(--primary);
     box-shadow: var(--glow);
 }
-.create-task-container .task-form .submit-button {
+.task-form-section .app-form .btn-submit {
     background-color: var(--primary);
     color: #0b1120;
     border: none;
@@ -198,10 +198,10 @@ html {
     padding: 10px 18px;
     font-weight: 600;
 }
-.create-task-container .task-form .submit-button:hover {
+.task-form-section .app-form .btn-submit:hover {
     box-shadow: var(--glow);
 }
-.login-container {
+.auth-card {
     max-width: 400px;
     margin: 0 auto;
     background-color: var(--surface);
@@ -211,33 +211,33 @@ html {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(59, 130, 246, 0.05);
 
 }
-.login-container h2 {
+.auth-card h2 {
     text-align: center;
     margin-bottom: 20px;
 }
-.login-container form {
+.auth-card form {
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
-.login-container form label {
+.auth-card form label {
     font-weight: 500;
 }
-.login-container form input[type="text"],
-.login-container form input[type="password"] {
+.auth-card form input[type="text"],
+.auth-card form input[type="password"] {
     padding: 10px;
     border: 1px solid var(--border);
     border-radius: var(--radius);
     background-color: var(--surface-raised);
     color: var(--text);
 }
-.login-container form input[type="text"]:focus,
-.login-container form input[type="password"]:focus {
+.auth-card form input[type="text"]:focus,
+.auth-card form input[type="password"]:focus {
     outline: none;
     border-color: var(--primary);
     box-shadow: var(--glow);
 }
-.login-container form button {
+.auth-card form button {
     background-color: var(--primary);
     color: #0b1120;
     border: none;
@@ -245,6 +245,115 @@ html {
     padding: 10px 18px;
     font-weight: 600;
 }
-.login-container form button:hover {
+.auth-card form button:hover {
     box-shadow: var(--glow);
 }
+
+.app-form .form_checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 500;
+    cursor: pointer;
+}
+.app-form .form_checkbox-label input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--primary);
+    cursor: pointer;
+}
+
+
+/* ── To-Do List ─────────────────────────────────────────── */
+
+.todo-list {
+    list-style: none;
+    padding: 0;
+    margin: 16px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.todo-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background-color: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.todo-item:hover {
+    border-color: var(--primary);
+    box-shadow: var(--glow);
+}
+
+.todo-item.todo-item--done {
+    opacity: 0.6;
+    border-color: var(--border);
+}
+
+.todo-item.todo-item--done .todo-item_title {
+    text-decoration: line-through;
+    color: var(--muted);
+}
+
+.todo-item_checkbox {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--primary);
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.todo-item_title {
+    flex: 1;
+    font-weight: 500;
+    font-size: 15px;
+    color: var(--text);
+}
+
+.todo-item_due-date {
+    font-size: 13px;
+    color: var(--muted);
+    white-space: nowrap;
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 3px 10px;
+}
+
+.btn-edit,
+.btn-delete {
+    font-size: 13px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: box-shadow 0.2s ease;
+}
+
+.btn-edit {
+    background-color: var(--primary-tint);
+    color: var(--primary);
+    border: 1px solid var(--primary);
+}
+
+.btn-edit:hover {
+    box-shadow: var(--glow);
+}
+
+.btn-delete {
+    background-color: rgba(251, 113, 133, 0.1);
+    color: var(--danger);
+    border: 1px solid var(--danger);
+}
+
+.btn-delete:hover {
+    box-shadow: 0 0 20px rgba(251, 113, 133, 0.3);
+}
+

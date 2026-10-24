@@ -8,20 +8,20 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="login-container">
+    <div class="auth-card">
         <h2>Create Account</h2>
 
         <?php if (isset($_GET['error'])): ?>
             <?php if ($_GET['error'] === 'taken'): ?>
-                <p class="form-error">That username is already taken.</p>
+                <p class="alert-error">That username is already taken.</p>
             <?php elseif ($_GET['error'] === 'mismatch'): ?>
-                <p class="form-error">Passwords do not match.</p>
+                <p class="alert-error">Passwords do not match.</p>
             <?php elseif ($_GET['error'] === 'missing'): ?>
-                <p class="form-error">All fields are required.</p>
+                <p class="alert-error">All fields are required.</p>
             <?php endif; ?>
         <?php endif; ?>
 
-        <form action="register_process.php" method="POST" class="task-form">
+        <form action="register_process.php" method="POST" class="app-form">
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" required
                    value="<?php echo htmlspecialchars($_GET['name'] ?? ''); ?>">
@@ -36,7 +36,7 @@
             <label for="confirm_password">Confirm Password:</label>
             <input type="password" id="confirm_password" name="confirm_password" required>
 
-            <button type="submit" class="submit-button">Create Account</button>
+            <button type="submit" class="btn-submit">Create Account</button>
         </form>
 
         <p>Already have an account? <a href="login.php">Log in</a></p>
