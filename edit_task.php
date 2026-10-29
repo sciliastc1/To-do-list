@@ -42,7 +42,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $status = in_array($_POST['status'] ?? '', $allowed_statuses, true)
         ? $_POST['status'] : 'not_started';
 
-    if ($title !== '' && $due_date !== '') {
+    // Validate date format (YYYY-MM-DD) so a bad value can't crash the UPDATE
+    $date = DateTimeImmutable::createFromFormat('Y-m-d', $due_date);
+    $valid_date = $date && $date->format('Y-m-d') === $due_date;
+
+    if ($title !== '' && $valid_date) {
         editTask($task_id, $user_id, $title, $description, $due_date, $priority, $status);
         $conn->close();
         header('Location: index.php');
@@ -69,7 +73,7 @@ $conn->close();
                    value="<?php echo htmlspecialchars($task['title']); ?>">
 
             <label for="description">Description:</label>
-            <textarea id="description" name="description" class="form_textarea"><?php echo htmlspecialchars($task['description']); ?></textarea>
+            <textarea id="description" name="description" class="form_textarea"><?php echo htmlspecialchars($task['description'] ?? ''); ?></textarea>
 
             <label for="due_date">Due Date:</label>
             <input type="date" id="due_date" name="due_date" class="form_select" required
@@ -95,4 +99,3 @@ $conn->close();
     </div>
 </body>
 </html>
-

@@ -17,7 +17,7 @@
     require_once __DIR__ . '/db.php';
 
     $user_id = (int) $_SESSION['user_id'];
-    $name    = htmlspecialchars($_SESSION['name'] ?? 'there');
+    $name    = $_SESSION['name'] ?? 'there';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -47,11 +47,6 @@
         <h2>Task List</h2>
         <p>View and manage your tasks.</p>
         <a href="tasks.php" class="button">Go to Tasks</a>
-    </div>
-    <div class="dashboard-card">
-        <h2>Calendar</h2>
-        <p>Check your schedule and deadlines.</p>
-        <a href="calendar.php" class="button">Go to Calendar</a>
     </div>
     <div class="dashboard-card">
         <h2>Reports</h2>
@@ -90,13 +85,13 @@
     ?>
     <button class="btn-add-task" onclick="window.location.href='index.php?action=add'">
         Add New Task
-    </button>  
+    </button>
 
     <?php
         // Include the create_task.php form
         if(isset($_GET['action']) && $_GET['action'] === 'add') {
             include 'create_task.php';
-            
+
         }
     ?>
     <?php

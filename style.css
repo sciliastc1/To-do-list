@@ -95,12 +95,20 @@ html {
 .dashboard-card:hover {
     box-shadow: var(--glow);
 }
-.dashboard-card a {
-    color: var(--primary);
+.dashboard-card .button {
+    display: inline-block;
+    background-color: var(--primary);
+    color: black;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 8px;
     text-decoration: none;
+    white-space: nowrap;
+    transition: box-shadow 0.2s ease;
 }
-.dashboard-card a:hover {
-    color: var(--primary-hover);
+.dashboard-card .button:hover {
+    box-shadow: var(--glow);
 }
 .todo-section {
     margin-top: 40px;
@@ -113,11 +121,14 @@ html {
     margin-top: 20px;
     text-decoration: none;
     background-color: var(--primary);
-    color: #0b1120;
+    color: black;
     border: none;
-    border-radius: var(--radius);
-    padding: 10px 18px;
+    border-radius: 8px;
+    padding: 5px 12px;
+    font-size: 13px;
     font-weight: 600;
+    cursor: pointer;
+    transition: box-shadow 0.2s ease;
 }
 .todo-section .btn-add-task:hover {
     box-shadow: var(--glow);
@@ -157,15 +168,18 @@ html {
 }
 .task-form-section .app-form button {
     background-color: var(--primary);
-    color: #0b1120;
+    color: black;
     border: none;
-    border-radius: var(--radius);
-    padding: 10px 18px;
+    border-radius: 8px;
+    padding: 5px 12px;
+    font-size: 13px;
     font-weight: 600;
+    cursor: pointer;
+    transition: box-shadow 0.2s ease;
 }
 .task-form-section .app-form button:hover {
     box-shadow: var(--glow);
-}   
+}
 
 .task-form-section .app-form .form_textarea {
     color: var(--text);
@@ -192,11 +206,14 @@ html {
 }
 .task-form-section .app-form .btn-submit {
     background-color: var(--primary);
-    color: #0b1120;
+    color: black;
     border: none;
-    border-radius: var(--radius);
-    padding: 10px 18px;
+    border-radius: 8px;
+    padding: 5px 12px;
+    font-size: 13px;
     font-weight: 600;
+    cursor: pointer;
+    transition: box-shadow 0.2s ease;
 }
 .task-form-section .app-form .btn-submit:hover {
     box-shadow: var(--glow);
@@ -239,11 +256,14 @@ html {
 }
 .auth-card form button {
     background-color: var(--primary);
-    color: #0b1120;
+    color: black;
     border: none;
-    border-radius: var(--radius);
-    padding: 10px 18px;
+    border-radius: 8px;
+    padding: 5px 12px;
+    font-size: 13px;
     font-weight: 600;
+    cursor: pointer;
+    transition: box-shadow 0.2s ease;
 }
 .auth-card form button:hover {
     box-shadow: var(--glow);
@@ -318,12 +338,13 @@ html {
 
 .todo-item_due-date {
     font-size: 13px;
-    color: var(--muted);
+    font-weight: 600;
+    color: black;
     white-space: nowrap;
-    background-color: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 3px 10px;
+    background-color: var(--muted);
+    border: 1px solid var(--muted);
+    border-radius: 8px;
+    padding: 5px 12px;
 }
 
 .btn-edit,
@@ -338,9 +359,9 @@ html {
 }
 
 .btn-edit {
-    background-color: var(--primary-tint);
-    color: var(--primary);
-    border: 1px solid var(--primary);
+    background-color: var(--primary);
+    color: black;
+
 }
 
 .btn-edit:hover {
@@ -348,8 +369,8 @@ html {
 }
 
 .btn-delete {
-    background-color: rgba(251, 113, 133, 0.1);
-    color: var(--danger);
+    background-color: var(--danger);
+    color: black;
     border: 1px solid var(--danger);
 }
 
@@ -357,3 +378,125 @@ html {
     box-shadow: 0 0 20px rgba(251, 113, 133, 0.3);
 }
 
+
+/* ── Account page ───────────────────────────────────────── */
+
+.account-details {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 10px 20px;
+    margin: 0;
+}
+
+.account-details dt {
+    color: var(--muted);
+    font-weight: 500;
+}
+
+.account-details dd {
+    margin: 0;
+}
+
+.alert-error,
+.alert-success {
+    font-size: 13px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 8px;
+    color: black;
+}
+
+.alert-error {
+    background-color: var(--danger);
+}
+
+.alert-success {
+    background-color: var(--success);
+}
+
+
+/* ── Task List page ─────────────────────────────────────── */
+
+.task-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.task-filter {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 12px;
+    border: 1px solid var(--muted);
+    border-radius: 8px;
+    background-color: var(--muted);
+    color: black;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 13px;
+    transition: box-shadow 0.2s ease;
+}
+
+.task-filter:hover {
+    box-shadow: var(--glow);
+}
+
+.task-filter--active {
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+.task-filter_count {
+    font-size: 12px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+    padding: 1px 8px;
+}
+
+.todo-item_body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.todo-item_description {
+    font-size: 13px;
+    color: var(--muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.todo-item_due-date--overdue {
+    background-color: var(--danger);
+    border-color: var(--danger);
+}
+
+.badge {
+    font-size: 13px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 8px;
+    white-space: nowrap;
+    color: black;
+    background-color: var(--muted);
+    border: 1px solid var(--muted);
+}
+
+.badge--high {
+    background-color: var(--danger);
+    border-color: var(--danger);
+}
+
+.badge--medium {
+    background-color: var(--accent);
+    border-color: var(--accent);
+}
+
+.badge--low {
+    background-color: var(--success);
+    border-color: var(--success);
+}

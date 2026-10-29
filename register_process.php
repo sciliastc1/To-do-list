@@ -32,9 +32,9 @@ if ($password !== $confirm_password) {
     exit;
 }
 
-// Check if name is already taken
-$stmt = $conn->prepare("SELECT id FROM users WHERE name = ? LIMIT 1");
-$stmt->bind_param('s', $name);
+// Check if name or email is already taken (both are UNIQUE in the schema)
+$stmt = $conn->prepare("SELECT id FROM users WHERE name = ? OR email = ? LIMIT 1");
+$stmt->bind_param('ss', $name, $email);
 $stmt->execute();
 $stmt->store_result();
 

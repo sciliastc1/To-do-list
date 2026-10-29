@@ -21,7 +21,7 @@ function editTask(int $taskId, int $userId, string $title, string $description, 
     $stmt = $conn->prepare(
         "UPDATE tasks SET title = ?, description = ?, due_date = ?, priority = ?, status = ?, is_done = ? WHERE id = ? AND user_id = ?"
     );
-    $stmt->bind_param('sssssiis', $title, $description, $dueDate, $priority, $status, $is_done, $taskId, $userId);
+    $stmt->bind_param('sssssiii', $title, $description, $dueDate, $priority, $status, $is_done, $taskId, $userId);
     $stmt->execute();
     $stmt->close();
 }
@@ -39,4 +39,3 @@ function getTask(int $taskId, int $userId): ?array {
 
     return $task ?: null;
 }
-?>

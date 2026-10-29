@@ -13,7 +13,7 @@
 
         <?php if (isset($_GET['error'])): ?>
             <?php if ($_GET['error'] === 'taken'): ?>
-                <p class="alert-error">That username is already taken.</p>
+                <p class="alert-error">That username or email is already registered.</p>
             <?php elseif ($_GET['error'] === 'mismatch'): ?>
                 <p class="alert-error">Passwords do not match.</p>
             <?php elseif ($_GET['error'] === 'missing'): ?>

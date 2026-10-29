@@ -24,7 +24,7 @@ $status = isset($_POST['is_done']) ? 'completed' : 'not_started';
 // Fetch current task to keep existing fields intact
 $task = getTask($task_id, $user_id);
 if ($task !== null) {
-    editTask($task_id, $user_id, $task['title'], $task['description'], $task['due_date'], $task['priority'], $status);
+    editTask($task_id, $user_id, $task['title'], $task['description'] ?? '', $task['due_date'], $task['priority'], $status);
 }
 
 $conn->close();
