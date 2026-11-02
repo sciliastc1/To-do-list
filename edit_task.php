@@ -5,6 +5,7 @@ session_start();
 
 require_once __DIR__ . '/db.php';
 require_once __DIR__ . '/task_worker.php';
+require_once __DIR__ . '/twig.php';
 
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
@@ -55,47 +56,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $conn->close();
-?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Task - Task Flow</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div class="task-form-section">
-        <h2>Edit Task</h2>
-        <form method="POST" class="app-form">
-            <label for="title">Task Title:</label>
-            <input type="text" id="title" name="title" required
-                   value="<?php echo htmlspecialchars($task['title']); ?>">
 
-            <label for="description">Description:</label>
-            <textarea id="description" name="description" class="form_textarea"><?php echo htmlspecialchars($task['description'] ?? ''); ?></textarea>
-
-            <label for="due_date">Due Date:</label>
-            <input type="date" id="due_date" name="due_date" class="form_select" required
-                   value="<?php echo htmlspecialchars($task['due_date']); ?>">
-
-            <label for="priority">Priority:</label>
-            <select id="priority" name="priority" class="form_select">
-                <option value="low"    <?php echo $task['priority'] === 'low'    ? 'selected' : ''; ?>>Low</option>
-                <option value="medium" <?php echo $task['priority'] === 'medium' ? 'selected' : ''; ?>>Medium</option>
-                <option value="high"   <?php echo $task['priority'] === 'high'   ? 'selected' : ''; ?>>High</option>
-            </select>
-
-            <label for="status">Status:</label>
-            <select id="status" name="status" class="form_select">
-                <option value="not_started" <?php echo $task['status'] === 'not_started' ? 'selected' : ''; ?>>Not Started</option>
-                <option value="in_progress" <?php echo $task['status'] === 'in_progress' ? 'selected' : ''; ?>>In Progress</option>
-                <option value="completed"   <?php echo $task['status'] === 'completed'   ? 'selected' : ''; ?>>Completed</option>
-            </select>
-
-            <button type="submit" class="btn-submit">Save Changes</button>
-            <a href="index.php" class="btn-submit" style="text-align:center; text-decoration:none;">Cancel</a>
-        </form>
-    </div>
-</body>
-</html>
+// Hand the task to the template so it can pre-fill the form
+render('edit_task.html.twig', ['task' => $task]);

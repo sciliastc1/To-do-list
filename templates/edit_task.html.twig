@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Task - Task Flow{% endblock %}
+
+{% block body %}
+<div class="task-form-section">
+    <h2>Edit Task</h2>
+    <form method="POST" class="app-form">
+        <label for="title">Task Title:</label>
+        <input type="text" id="title" name="title" required value="{{ task.title }}">
+
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" class="form_textarea">{{ task.description }}</textarea>
+
+        <label for="due_date">Due Date:</label>
+        <input type="date" id="due_date" name="due_date" class="form_select" required value="{{ task.due_date }}">
+
+        <label for="priority">Priority:</label>
+        <select id="priority" name="priority" class="form_select">
+            <option value="low"    {{ task.priority == 'low'    ? 'selected' : '' }}>Low</option>
+            <option value="medium" {{ task.priority == 'medium' ? 'selected' : '' }}>Medium</option>
+            <option value="high"   {{ task.priority == 'high'   ? 'selected' : '' }}>High</option>
+        </select>
+
+        <label for="status">Status:</label>
+        <select id="status" name="status" class="form_select">
+            <option value="not_started" {{ task.status == 'not_started' ? 'selected' : '' }}>Not Started</option>
+            <option value="in_progress" {{ task.status == 'in_progress' ? 'selected' : '' }}>In Progress</option>
+            <option value="completed"   {{ task.status == 'completed'   ? 'selected' : '' }}>Completed</option>
+        </select>
+
+        <button type="submit" class="btn-submit">Save Changes</button>
+        <a href="index.php" class="btn-submit" style="text-align:center; text-decoration:none;">Cancel</a>
+    </form>
+</div>
+{% endblock %}
