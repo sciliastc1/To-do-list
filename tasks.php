@@ -10,6 +10,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 require_once __DIR__ . '/db.php';
+require_once __DIR__ . '/twig.php';
 
 $user_id = (int) $_SESSION['user_id'];
 
@@ -49,98 +50,13 @@ $tasks = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 $stmt->close();
 $conn->close();
 
-$today = date('Y-m-d');
-?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task List - Task Flow</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-<nav class="navbar">
-    <div class="logo">Task Flow</div>
-    <div class="navbar_links">
-        <a href="index.php">Home</a>
-        <a href="tasks.php">Tasks</a>
-        <a href="account.php">Account</a>
-    </div>
-</nav>
-
-<div class="content">
-    <h1>Task List</h1>
-    <p>All your tasks in one place.</p>
-</div>
-
-<div class="todo-section">
-    <div class="task-filters">
-        <a href="tasks.php" class="task-filter <?php echo $filter === 'all' ? 'task-filter--active' : ''; ?>">
-            All <span class="task-filter_count"><?php echo $counts['all']; ?></span>
-        </a>
-        <?php foreach ($status_labels as $key => $label): ?>
-            <a href="tasks.php?status=<?php echo $key; ?>"
-               class="task-filter <?php echo $filter === $key ? 'task-filter--active' : ''; ?>">
-                <?php echo $label; ?> <span class="task-filter_count"><?php echo $counts[$key]; ?></span>
-            </a>
-        <?php endforeach; ?>
-    </div>
-
-    <?php if (count($tasks) > 0): ?>
-        <ul class="todo-list">
-            <?php foreach ($tasks as $task):
-                $is_done = (bool) $task['is_done'];
-                $overdue = !$is_done && $task['due_date'] < $today;
-            ?>
-                <li class="todo-item <?php echo $is_done ? 'todo-item--done' : ''; ?>">
-                    <form action="toggle_task.php" method="POST" style="display:inline;">
-                        <input type="hidden" name="task_id" value="<?php echo (int) $task['id']; ?>">
-                        <input type="checkbox" class="todo-item_checkbox" name="is_done" value="1"
-                               <?php echo $is_done ? 'checked' : ''; ?> onchange="this.form.submit()">
-                    </form>
-
-                    <div class="todo-item_body">
-                        <span class="todo-item_title"><?php echo htmlspecialchars($task['title']); ?></span>
-                        <?php if (($task['description'] ?? '') !== ''): ?>
-                            <span class="todo-item_description"><?php echo htmlspecialchars($task['description']); ?></span>
-                        <?php endif; ?>
-                    </div>
-
-                    <span class="badge badge--<?php echo htmlspecialchars($task['priority']); ?>">
-                        <?php echo ucfirst(htmlspecialchars($task['priority'])); ?>
-                    </span>
-                    <span class="badge badge--status">
-                        <?php echo $status_labels[$task['status']] ?? htmlspecialchars($task['status']); ?>
-                    </span>
-                    <span class="todo-item_due-date <?php echo $overdue ? 'todo-item_due-date--overdue' : ''; ?>">
-                        <?php echo $overdue ? 'Overdue · ' : ''; ?><?php echo htmlspecialchars($task['due_date']); ?>
-                    </span>
-
-                    <a href="edit_task.php?id=<?php echo (int) $task['id']; ?>" class="btn-edit">Edit</a>
-                    <a href="delete_task.php?id=<?php echo (int) $task['id']; ?>" class="btn-delete"
-                       onclick="return confirm('Delete this task?');">Delete</a>
-                </li>
-            <?php endforeach; ?>
-        </ul>
-    <?php elseif ($filter === 'all'): ?>
-        <p>No tasks yet. Add a new task to get started!</p>
-    <?php else: ?>
-        <p>No tasks with status “<?php echo $status_labels[$filter]; ?>”.</p>
-    <?php endif; ?>
-
-    <button class="btn-add-task" onclick="window.location.href='tasks.php?action=add'">
-        Add New Task
-    </button>
-     <?php
-        // Include the create_task.php form
-        if(isset($_GET['action']) && $_GET['action'] === 'add') {
-            include 'create_task.php';
-
-        }
-    ?>
-</div>
-
-</body>
-</html>
+// Hand the data to the template
+render('tasks.html.twig', [
+    'tasks'         => $tasks,
+    'status_labels' => $status_labels,
+    'counts'        => $counts,
+    'filter'        => $filter,
+    'today'         => date('Y-m-d'),
+    'show_form'     => ($_GET['action'] ?? '') === 'add',
+    'error'         => $_GET['error'] ?? '',
+]);

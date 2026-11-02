@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Task List - Task Flow{% endblock %}
+
+{% block body %}
+<div class="content">
+    <h1>Task List</h1>
+    <p>All your tasks in one place.</p>
+</div>
+
+<div class="todo-section">
+    <div class="task-filters">
+        <a href="tasks.php" class="task-filter {{ filter == 'all' ? 'task-filter--active' }}">
+            All <span class="task-filter_count">{{ counts.all }}</span>
+        </a>
+        {% for key, label in status_labels %}
+            <a href="tasks.php?status={{ key }}"
+               class="task-filter {{ filter == key ? 'task-filter--active' }}">
+                {{ label }} <span class="task-filter_count">{{ counts[key] }}</span>
+            </a>
+        {% endfor %}
+    </div>
+
+    {% if tasks %}
+        <ul class="todo-list">
+            {% for task in tasks %}
+                {% set overdue = not task.is_done and task.due_date < today %}
+                <li class="todo-item {{ task.is_done ? 'todo-item--done' }}">
+                    <form action="toggle_task.php" method="POST" style="display:inline;">
+                        <input type="hidden" name="task_id" value="{{ task.id }}">
+                        <input type="checkbox" class="todo-item_checkbox" name="is_done" value="1"
+                               {{ task.is_done ? 'checked' }} onchange="this.form.submit()">
+                    </form>
+
+                    <div class="todo-item_body">
+                        <span class="todo-item_title">{{ task.title }}</span>
+                        {% if task.description %}
+                            <span class="todo-item_description">{{ task.description }}</span>
+                        {% endif %}
+                    </div>
+
+                    <span class="badge badge--{{ task.priority }}">{{ task.priority|capitalize }}</span>
+                    <span class="badge badge--status">{{ status_labels[task.status] ?? task.status }}</span>
+                    <span class="todo-item_due-date {{ overdue ? 'todo-item_due-date--overdue' }}">
+                        {{ overdue ? 'Overdue · ' }}{{ task.due_date }}
+                    </span>
+
+                    <a href="edit_task.php?id={{ task.id }}" class="btn-edit">Edit</a>
+                    <a href="delete_task.php?id={{ task.id }}" class="btn-delete"
+                       onclick="return confirm('Delete this task?');">Delete</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% elseif filter == 'all' %}
+        <p>No tasks yet. Add a new task to get started!</p>
+    {% else %}
+        <p>No tasks with status “{{ status_labels[filter] }}”.</p>
+    {% endif %}
+
+    <button class="btn-add-task" onclick="window.location.href='tasks.php?action=add'">
+        Add New Task
+    </button>
+
+    {% if show_form %}
+        {% include 'partials/create_task.html.twig' %}
+    {% endif %}
+</div>
+{% endblock %}

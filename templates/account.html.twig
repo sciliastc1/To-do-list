@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Account - Task Flow{% endblock %}
+
+{% block body %}
+<div class="content">
+    <h1>Account</h1>
+    <p>Your profile and settings.</p>
+</div>
+
+<div class="todo-section">
+    <h2>Profile</h2>
+    <dl class="account-details">
+        <dt>Name</dt>
+        <dd>{{ user.name }}</dd>
+        <dt>Email</dt>
+        <dd>{{ user.email }}</dd>
+    </dl>
+</div>
+
+<div class="dashboard-cards">
+    <div class="dashboard-card">
+        <h2>{{ stats.total }}</h2>
+        <p>Total tasks</p>
+    </div>
+    <div class="dashboard-card">
+        <h2>{{ stats.completed }}</h2>
+        <p>Completed</p>
+    </div>
+    <div class="dashboard-card">
+        <h2>{{ stats.overdue }}</h2>
+        <p>Overdue</p>
+    </div>
+</div>
+
+<div class="task-form-section">
+    <h2>Change Password</h2>
+
+{% if message is not null %}
+    <p class="alert-{{ message.type }}">{{ message.text }}</p>
+{% endif %}
+
+    <form method="POST" class="app-form">
+        <label for="current_password">Current Password:</label>
+        <input type="password" id="current_password" name="current_password" required>
+
+        <label for="new_password">New Password:</label>
+        <input type="password" id="new_password" name="new_password" required>
+
+        <label for="confirm_password">Confirm New Password:</label>
+        <input type="password" id="confirm_password" name="confirm_password" required>
+
+        <button type="submit" class="btn-submit">Update Password</button>
+    </form>
+</div>
+
+<div class="todo-section">
+    <a href="logout.php" class="btn-delete">Log Out</a>
+</div>
+{% endblock %}

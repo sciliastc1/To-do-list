@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account - Task Flow</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="auth-card">
+    <h2>Create Account</h2>
+
+    {% if error == 'taken' %}
+        <p class="alert-error">That username or email is already registered.</p>
+    {% elseif error == 'mismatch' %}
+        <p class="alert-error">Passwords do not match.</p>
+    {% elseif error == 'missing' %}
+        <p class="alert-error">All fields are required.</p>
+    {% endif %}
+
+    {% if success %}
+        <p class="alert-success">Account created successfully! You can now <a href="login.php">log in</a>.</p>
+    {% endif %}
+
+    <form action="register_process.php" method="POST" class="app-form">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required value="{{ name }}">
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required value="{{ email }}">
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+
+        <label for="confirm_password">Confirm Password:</label>
+        <input type="password" id="confirm_password" name="confirm_password" required>
+
+        <button type="submit" class="btn-submit">Create Account</button>
+    </form>
+
+    <p>Already have an account? <a href="login.php">Log in</a></p>
+</div>
+</body>
+</html>

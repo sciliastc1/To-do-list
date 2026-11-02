@@ -1,9 +1,9 @@
 <div class="task-form-section">
     <h2>Create New Task</h2>
 
-    <?php if (isset($_GET['error']) && $_GET['error'] === 'missing'): ?>
+    {% if error == 'missing' %}
         <p class="alert-error">Title and due date are required.</p>
-    <?php endif; ?>
+    {% endif %}
 
     <form action="save_task.php" method="POST" class="app-form">
         <label for="title">Task Title:</label>
