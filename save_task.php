@@ -1,6 +1,9 @@
 <?php
 declare(strict_types=1);
 
+// Saves a new task from the "Create New Task" form
+// and then goes back to the home page.
+
 session_start();
 
 require_once __DIR__ . '/db.php';
@@ -60,6 +63,8 @@ if (isset($_POST['is_done']) && $_POST['is_done'] === '1') {
 }
 $created_at = date('Y-m-d H:i:s');
 
+// Prepared statement, so the user input can't change the SQL
+// The letters in bind_param are the types: i = integer, s = string
 $stmt = $conn->prepare(
     "INSERT INTO tasks (user_id, title, description, due_date, priority, status, is_done, created_at)
      VALUES (?, ?, ?, ?, ?, ?, ?, ?)"

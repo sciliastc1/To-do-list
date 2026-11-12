@@ -1,8 +1,11 @@
 <?php
     declare(strict_types=1);
 
+    // Home page: greets the user and shows their to-do list.
+
     session_start();
 
+    // Show all errors while developing (turn this off on a real server)
     ini_set('display_errors', '1');
     ini_set('display_startup_errors', '1');
     error_reporting(E_ALL);
@@ -19,6 +22,7 @@
     require_once __DIR__ . '/twig.php';
 
     $user_id = (int) $_SESSION['user_id'];
+    // Falls back to "there" so the greeting still works without a name
     $name    = $_SESSION['name'] ?? 'there';
 
     // Fetch this user's tasks as an array the template can loop over
@@ -33,6 +37,5 @@
     render('index.html.twig', [
         'name'      => $name,
         'tasks'     => $tasks,
-        'show_form' => ($_GET['action'] ?? '') === 'add',
         'error'     => $_GET['error'] ?? '',
     ]);

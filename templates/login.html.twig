@@ -1,3 +1,5 @@
+{# Login page. Does not extend base.html.twig because there is no navbar before login.
+   Gets: error (from login.php) #}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,6 +13,7 @@
         <h2>Login</h2>
         {% if error == 'missing' %}
             <p class="alert-error">Please fill in all fields.</p>
+        {# Same message for a wrong name and a wrong password #}
         {% elseif error %}
             <p class="alert-error">Invalid username or password.</p>
         {% endif %}

@@ -1,3 +1,5 @@
+{# Create account page, no navbar like the login page.
+   Gets: error, success, name, email (from create_accout.php) #}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,6 +24,7 @@
         <p class="alert-success">Account created successfully! You can now <a href="login.php">log in</a>.</p>
     {% endif %}
 
+    {# name and email are filled in again after an error so you don't have to retype them #}
     <form action="register_process.php" method="POST" class="app-form">
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" required value="{{ name }}">

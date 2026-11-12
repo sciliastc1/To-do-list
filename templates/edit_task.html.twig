@@ -1,4 +1,5 @@
 {% extends 'base.html.twig' %}
+{# Edit form for one task. Gets: task (from edit_task.php) #}
 
 {% block title %}Edit Task - Task Flow{% endblock %}
 
@@ -15,6 +16,7 @@
         <label for="due_date">Due Date:</label>
         <input type="date" id="due_date" name="due_date" class="form_select" required value="{{ task.due_date }}">
 
+        {# 'selected' is added to the option the task has now #}
         <label for="priority">Priority:</label>
         <select id="priority" name="priority" class="form_select">
             <option value="low"    {{ task.priority == 'low'    ? 'selected' : '' }}>Low</option>
