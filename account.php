@@ -1,6 +1,9 @@
 <?php
 declare(strict_types=1);
 
+// Account page: shows the profile, some task numbers
+// and a form to change the password.
+
 session_start();
 
 // Redirect to login if not logged in
@@ -21,6 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $new_password     = $_POST['new_password']     ?? '';
     $confirm_password = $_POST['confirm_password'] ?? '';
 
+    // Get the saved hash so the current password can be checked
     $stmt = $conn->prepare("SELECT password_hash FROM users WHERE id = ? LIMIT 1");
     $stmt->bind_param('i', $user_id);
     $stmt->execute();
@@ -35,6 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($new_password !== $confirm_password) {
         $message = ['type' => 'error', 'text' => 'New passwords do not match.'];
     } else {
+        // Everything is fine, save the new password (hashed)
         $new_hash = password_hash($new_password, PASSWORD_DEFAULT);
         $stmt = $conn->prepare("UPDATE users SET password_hash = ? WHERE id = ?");
         $stmt->bind_param('si', $new_hash, $user_id);
@@ -58,7 +63,8 @@ if ($user === null) {
     exit;
 }
 
-// Task stats
+// Task stats: total, completed, and not done but past the due date
+// COALESCE turns NULL into 0 for users without tasks
 $stmt = $conn->prepare(
     "SELECT COUNT(*) AS total,
             COALESCE(SUM(is_done = 1), 0) AS completed,

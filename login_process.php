@@ -1,6 +1,9 @@
 <?php
 declare(strict_types=1);
 
+// Checks the name and password from the login form.
+// If they are correct the user is logged in and sent to the home page.
+
 // Start session before any output
 session_start();
 
@@ -51,6 +54,7 @@ session_regenerate_id(true); // prevent session fixation
 $_SESSION['user_id'] = $user_id;
 $_SESSION['name']    = $name;
 
+// Logged in, go to the home page
 header('Location: index.php');
 exit;
 

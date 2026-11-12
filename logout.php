@@ -1,6 +1,9 @@
 <?php
 declare(strict_types=1);
 
+// Logs the user out and goes back to the login page.
+
+// The session has to be started before it can be destroyed
 session_start();
 
 // Clear session data and the session cookie

@@ -1,6 +1,9 @@
 <?php
 declare(strict_types=1);
 
+// Handles the create account form: checks the input, saves the new user
+// and logs them in. On a mistake the user is sent back to the form with ?error=...
+
 // TEMPORARY: show errors in browser to debug 500 — remove before going live
 ini_set('display_errors', '1');
 error_reporting(E_ALL);
@@ -26,7 +29,7 @@ if ($name === '' || $email === '' || $password === '') {
     exit;
 }
 
-// Password match check
+// Password match check (name and email are sent back so the form can keep them)
 if ($password !== $confirm_password) {
     header('Location: create_accout.php?error=mismatch&name=' . urlencode($name) . '&email=' . urlencode($email));
     exit;

@@ -1,4 +1,6 @@
-<div class="task-form-section">
+{# Form to add a task, included in index and tasks. It is sent to save_task.php.
+   Hidden by default, but open when there was an error so the message can be seen. #}
+<div class="task-form-section" id="task-form" style="display: {{ error ? 'block' : 'none' }};">
     <h2>Create New Task</h2>
 
     {% if error == 'missing' %}

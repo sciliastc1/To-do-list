@@ -1,4 +1,5 @@
 {% extends 'base.html.twig' %}
+{# Account page. Gets: user, stats, message (from account.php) #}
 
 {% block title %}Account - Task Flow{% endblock %}
 
@@ -36,6 +37,7 @@
 <div class="task-form-section">
     <h2>Change Password</h2>
 
+{# message.type is success or error, which picks the alert colour #}
 {% if message is not null %}
     <p class="alert-{{ message.type }}">{{ message.text }}</p>
 {% endif %}
