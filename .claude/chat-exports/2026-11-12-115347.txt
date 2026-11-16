@@ -1,0 +1,39 @@
+=== Claude Code Chat Export ===
+Date: 2026-11-12 11:53:47
+Project: To-do-list
+Branch: main
+Session: fec6304a-92c5-485d-a624-65f9571dc1c0
+
+---
+
+[ASSISTANT] Three steps, run from your project folder in the terminal:
+
+
+
+```bash
+
+git add .
+
+git commit -m "describe what you changed"
+
+git push
+
+```
+
+
+
+- **`git add .`** stages all your changed files (use `git add edit_task.php` to stage just one).
+
+- **`git commit -m "..."`** saves a snapshot locally with your message.
+
+- **`git push`** uploads your commits to GitHub.
+
+
+
+Your working tree is currently clean, so there's nothing to commit until you change a file. Run `git status` at any time to see what's changed and what's staged.
+
+
+
+In VS Code you can do the same from the Source Control panel (Ctrl+Shift+G): click `+` next to the files, type a message, press Commit, then Sync Changes.
+
+---

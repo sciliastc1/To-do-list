@@ -29,6 +29,17 @@ if ($name === '' || $email === '' || $password === '') {
     exit;
 }
 
+// Captcha check: compare what was typed with the text saved by captcha.php.
+// The saved answer is removed straight away, so every try needs a new picture.
+$captcha_answer = $_SESSION['captcha'] ?? '';
+unset($_SESSION['captcha']);
+$captcha_typed  = strtoupper(trim($_POST['captcha'] ?? ''));
+
+if ($captcha_answer === '' || !hash_equals($captcha_answer, $captcha_typed)) {
+    header('Location: create_accout.php?error=captcha&name=' . urlencode($name) . '&email=' . urlencode($email));
+    exit;
+}
+
 // Password match check (name and email are sent back so the form can keep them)
 if ($password !== $confirm_password) {
     header('Location: create_accout.php?error=mismatch&name=' . urlencode($name) . '&email=' . urlencode($email));

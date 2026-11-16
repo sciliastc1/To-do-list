@@ -1,0 +1,347 @@
+=== Claude Code Chat Export ===
+Date: 2026-11-16 11:38:33
+Project: To-do-list
+Branch: main
+Session: 745ce66c-5588-471a-9f77-af95bfaae710
+
+---
+
+[ASSISTANT] You've reached your Fable limit. Switch to another model, or manage usage credits at https://claude.ai/settings/usage?from=cc_cli_limit_message, to continue.
+
+[ASSISTANT] I'll check the project against each rubric item. Since this is a school assignment, I'll only review it and won't write any code for you.
+
+[TOOL: Bash] Show commit history and tracked files
+
+[TOOL: Bash] Show commit history and tracked files
+
+[ASSISTANT] Bash is temporarily unavailable, so I'll read the files directly instead.
+
+[TOOL: Read] Read
+
+[TOOL: Agent] Map project files for rubric
+
+[TOOL: Bash] Show commit history and tracked files
+
+[ASSISTANT] Bash is working again. The project is small, so I'll read the key files myself.
+
+[TOOL: Bash] Print all PHP source files
+
+[TOOL: Bash] Print JS, templates and search for captcha/search
+
+[TOOL: Bash] Check task.js, config.php history, directory listing
+
+[TOOL: Bash] Count tracked vendor files
+
+[ASSISTANT] ## Rubric check: Task Flow (To-do list)
+
+
+
+I read every PHP file, template and JS file, plus the git history. My estimate is **about 66/100 right now**. Most of the missing marks come from three things you haven't built yet: search, a CAPTCHA, and a security-testing report.
+
+
+
+| Criterion | Estimate | Verdict |
+
+|---|---|---|
+
+| CRUD | **20/20** | ✅ Done |
+
+| Security implementation | **~16/20** | ⚠️ 4 of 5 (no CAPTCHA) |
+
+| Security testing | **0/10** | ❌ No report anywhere |
+
+| Searching | **0–3/10** | ❌ No search |
+
+| Template engine | **20/20** | ✅ Done |
+
+| Ajax | **5–10/10** | ⚠️ Works, but might count as "simple use" |
+
+| Git | **5/10** | ⚠️ 11 commits, uneven |
+
+
+
+### Details
+
+
+
+**1. CRUD: all 4 work.**
+
+- **Create:** new tasks in [save_task.php:68](save_task.php#L68) and new users in [register_process.php:56](register_process.php#L56).
+
+- **Read:** [index.php:29](index.php#L29) and [tasks.php:27](tasks.php#L27).
+
+- **Update:** [task_worker.php:40](task_worker.php#L40) and the password change in [account.php:44](account.php#L44).
+
+- **Delete:** [task_worker.php:18](task_worker.php#L18).
+
+- Every query is a prepared statement and checks `user_id`.
+
+
+
+**2. Security implementation**
+
+- ✅ **Output escaping:** Twig's automatic escaping is on and no template uses `|raw`.
+
+- ✅ **Sessions:** every page and handler that needs a login checks `$_SESSION['user_id']`, including the ones called by fetch. You also call `session_regenerate_id` when someone logs in.
+
+- ✅ **Passwords:** stored with `password_hash` and checked with `password_verify`. Strictly that's hashing, not encryption, but it's what the marker wants.
+
+- ⚠️ **Input filtering is only partial.** You trim input, whitelist priority and status, check the date format and cast ids to int. But:
+
+  - You never use `filter_input` or `filter_var`.
+
+  - The email is never validated ([register_process.php:22](register_process.php#L22)).
+
+  - There are no length limits.
+
+  - Markers often look for those PHP functions by name, so using them makes this point easier to award.
+
+- ❌ **CAPTCHA:** there isn't one. The obvious places are the register and login forms, and it has to be checked on the server, not just shown in the form.
+
+
+
+**3. Security testing: nothing found.** You need to run a scanner such as OWASP ZAP and include its report. Expect it to flag things that are in the code now:
+
+- No CSRF tokens on your forms.
+
+- No security headers (CSP, X-Frame-Options).
+
+- Session cookie flags not set.
+
+- `display_errors` still on in [index.php:9](index.php#L9) and [register_process.php:8](register_process.php#L8).
+
+- A 404 for `reports.php`, which [index.html.twig:18](templates/index.html.twig#L18) links to but doesn't exist.
+
+
+
+The full 10 marks need "no vulnerabilities", so plan to fix what the scan finds and then scan again.
+
+
+
+**4. Searching: missing.** The status tabs in [tasks.js:99](tasks.js#L99) only hide rows in the browser that are already loaded. That's filtering, not search, so it may not count at all. For the full 10 the user has to be able to search on several things at once, for example keyword + priority + status + due date, with the query run on the server (several conditions joined with `AND`).
+
+
+
+**5. Template engine: complete.** Every page that outputs HTML goes through `render()`. The layout is shared through `base.html.twig` and the create-task form is a partial.
+
+
+
+**6. Ajax: works but basic.** fetch calls handle the checkbox toggle and delete ([tasks.js:33](tasks.js#L33), [tasks.js:61](tasks.js#L61)). The rubric's example of "useful" Ajax is autocomplete search. If you build the search above with Ajax (results update as the user types), it should score on both criteria.
+
+
+
+**7. Git: 11 commits from 17 Oct to 12 Nov.** There are gaps of up to 10 days, so this is the "partial use" band. Full marks need 20+ commits spread evenly. Small, frequent commits while you build the missing features would get you there.
+
+
+
+### Problems to fix outside the rubric
+
+- **Your database password is committed to git.** The `.gitignore` is in `templates/` rather than the project root, so it only applies inside that folder. As a result, [config.php](config.php) (with `password123`) was committed in `2980426`, and so were 326 files from `vendor/`. A `.gitignore` in the root plus `git rm --cached` would fix it. The password stays in the history, so change it.
+
+- [task.js](task.js) is empty and can be deleted.
+
+- [delete_task.php](delete_task.php) doesn't check that the request is a POST, unlike [toggle_task.php:13](toggle_task.php#L13).
+
+- The README has no Security section entry for input filtering, and the new features will need adding to it.
+
+
+
+### What earns the most marks next
+
+1. Search on several criteria at once, done with Ajax: up to +10 for search, plus up to +5 for Ajax.
+
+2. Scan with ZAP, fix what it finds, and include the report: +7 to +10.
+
+3. CAPTCHA on register and login: +4.
+
+4. Commit little and often: +5.
+
+
+
+You write the code. I can review each part as you finish it.
+
+[ASSISTANT] I'll explain the steps and you write the code. Use **Google reCAPTCHA v2 (the "I'm not a robot" checkbox)**. It's the simplest version, and the marker can see it on the page.
+
+
+
+## 1. Get your keys
+
+1. Go to **https://www.google.com/recaptcha/admin** and sign in.
+
+2. Create a new site:
+
+   - Type: **reCAPTCHA v2**, then **"I'm not a robot" Checkbox**
+
+   - Domains: add **`localhost`** (and your real domain if you host it).
+
+3. You get two keys:
+
+   - **Site key:** public. It goes in the HTML.
+
+   - **Secret key:** private. Only PHP uses it, and it must never appear in a template.
+
+
+
+## 2. Store the keys
+
+Add both keys to [config.php](config.php) next to the database settings.
+
+- [db.php:21](db.php#L21) runs `unset($config)`, so a process file can't read the keys from there. Load the config again wherever you need the keys.
+
+- Fix the `.gitignore` problem from my last message first. Otherwise your secret key gets committed too.
+
+
+
+## 3. Show the CAPTCHA (front end)
+
+For [create_accout.html.twig](templates/create_accout.html.twig) (and [login.html.twig](templates/login.html.twig) if you want it there too):
+
+1. Load Google's script: `https://www.google.com/recaptcha/api.js`. Put it in the `<head>` or just before `</body>`.
+
+2. Inside the `<form>`, above the submit button, add a `div` with class **`g-recaptcha`** and a **`data-sitekey`** attribute.
+
+3. Don't hard-code the key in the template. Pass it from [create_accout.php](create_accout.php) through `render()`, the same way you pass `error`. That way the Twig criterion stays clean.
+
+
+
+When the user ticks the box, Google adds a hidden field called **`g-recaptcha-response`** to the form automatically.
+
+
+
+## 4. Check it on the server (this is what earns the marks)
+
+Showing the box on its own does nothing. In [register_process.php](register_process.php), straight after the POST check and **before** any database work:
+
+1. Read `$_POST['g-recaptcha-response']`. If it's empty, the user didn't tick the box.
+
+2. Send a **POST** request to `https://www.google.com/recaptcha/api/siteverify` with these fields:
+
+   - `secret`: your secret key
+
+   - `response`: the token from step 1
+
+3. In PHP you can send it with `file_get_contents` plus `stream_context_create` (method POST, body built with `http_build_query`), or with cURL.
+
+4. Google replies with JSON. Decode it with `json_decode` and check whether **`success`** is `true`.
+
+5. If it isn't, redirect back with something like `?error=captcha`, the same pattern you already use for `missing` and `mismatch`. Then add a matching message to the template.
+
+
+
+## 5. Test it
+
+- Submit without ticking the box. You should see your error message, and no account should be created.
+
+- Tick the box and submit. The account should be created as normal.
+
+- Seeing "Invalid domain for site key"? `localhost` is missing from the domain list in step 1.
+
+
+
+Docs: https://developers.google.com/recaptcha/docs/display (front end) and https://developers.google.com/recaptcha/docs/verify (server check).
+
+
+
+When you're done, send me the changed files and I'll review them.
+
+[ASSISTANT] Yes. Every hosted CAPTCHA (Google, hCaptcha, Cloudflare Turnstile) needs keys, so the way around it is a CAPTCHA that runs on your own server. Two options:
+
+
+
+## Option A: Your own CAPTCHA with sessions (recommended)
+
+It needs no account, no keys and no internet, and you already use sessions. The idea:
+
+
+
+1. **Make the challenge.** When the form page loads ([create_accout.php](create_accout.php)), generate the challenge in PHP. Either:
+
+   - a random sum, e.g. "What is 7 + 4?" (`random_int` for the numbers), or
+
+   - a random string of 5–6 characters (shown as an image, see the next point).
+
+2. **Save the answer in `$_SESSION`**, e.g. `$_SESSION['captcha']`. Never put the answer in the HTML or a hidden field, or a bot can just read it.
+
+3. **Show the question** through `render()` and add an input such as `name="captcha"` to the form.
+
+   - For an image instead of text: add a small separate PHP file that draws the string with the **GD** extension (`imagecreatetruecolor`, `imagestring`, add a few random lines for noise, output with `imagepng`). The page links to it with `<img src="captcha.php">`. Check GD is installed with `php -m | grep gd`.
+
+4. **Check it** in [register_process.php](register_process.php), before any database work:
+
+   - Compare `$_POST['captcha']` with `$_SESSION['captcha']`. For the image version, compare without caring about upper and lower case.
+
+   - **Then `unset` the session value**, whether the answer was right or wrong. Otherwise one correct answer could be reused for many sign-ups.
+
+   - If it's wrong, redirect with `?error=captcha`, the same pattern as your other errors.
+
+5. **Test it:** a wrong answer gives the error and creates no account. Reload the page and you should get a new challenge.
+
+
+
+session_start() must come first in any file that reads or writes `$_SESSION`. [create_accout.php](create_accout.php) doesn't start a session yet.
+
+
+
+## Option B: A Composer library
+
+**`gregwar/captcha`** creates the distorted image for you with no keys: `composer require gregwar/captcha`. You still store its phrase in the session and check it yourself, just like steps 2 and 4 above. It's less work, but you write and learn less of it.
+
+
+
+**My pick:** Option A with the image. It clearly counts as "captcha used", shows you understand sessions, and puts your own code in front of the marker. The math version is quicker to build if you're short on time.
+
+[TOOL: Read] Read
+
+[TOOL: Bash] Check PHP GD extension availability
+
+[TOOL: Bash] Look for a PHP install or container
+
+[TOOL: Bash] Check XAMPP PHP version and GD functions
+
+[TOOL: Write] Write
+
+[TOOL: Edit] Edit
+
+[TOOL: Edit] Edit
+
+[TOOL: Edit] Edit
+
+[ASSISTANT] Now I'll check the PHP syntax with XAMPP's own libraries loaded.
+
+[TOOL: Bash] Lint PHP files and check GD with XAMPP libs
+
+[ASSISTANT] I've added an image CAPTCHA to the create-account page, but I couldn't run it. XAMPP's PHP won't start from this terminal because a system library (`libcrypt.so.1`) is missing, so the files haven't even had a syntax check. Please try it in the browser.
+
+
+
+**What I changed:**
+
+- **New [captcha.php](captcha.php):** draws a 5-character code as a PNG with random lines and dots over it, and saves the answer in `$_SESSION['captcha']`. The answer never appears in the page's HTML.
+
+- **[create_accout.html.twig](templates/create_accout.html.twig):** shows the image, a "New code" link that loads a fresh image, a "Security Code" input, and an error message for a wrong code.
+
+- **[register_process.php:32](register_process.php#L32):** checks the typed code against the saved one (upper or lower case both work) before any database work. It deletes the saved answer straight after reading it, so a code works only once. A wrong code sends the user back with the name and email still filled in.
+
+
+
+**To test it:**
+
+1. Open the create-account page. You should see the code image.
+
+2. Enter a wrong code. You should get "The security code was wrong" and no account should be created.
+
+3. Enter the right code. The account should be created as before.
+
+
+
+**If it doesn't work:**
+
+- **Broken image:** open `captcha.php` directly in the browser and look at the error. The likely cause is that the GD extension isn't enabled. In `/opt/lampp/etc/php.ini`, remove the `;` in front of `extension=gd`, then restart Apache.
+
+- **`php` in the terminal:** to fix the missing library, run `sudo dnf install libxcrypt-compat`.
+
+
+
+To score this rubric point, mention in your report that the CAPTCHA is your own, built with sessions and GD. The same check could go on the login form too if you want it.
+
+---
