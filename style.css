@@ -437,6 +437,25 @@ textarea:focus-visible {
 
 /* ── Filter tabs ────────────────────────────────────────── */
 
+.task-search {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 12px;
+    padding: 10px 12px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    background-color: var(--surface);
+    color: var(--text);
+    font: inherit;
+    transition: border-color var(--ease), box-shadow var(--ease);
+}
+
+.task-search:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: var(--ring);
+}
+
 .task-filters {
     display: flex;
     flex-wrap: wrap;

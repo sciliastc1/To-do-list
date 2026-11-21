@@ -10,6 +10,9 @@
 </div>
 
 <div class="todo-section">
+    {# Search box. tasks.js asks search_tasks.php which tasks match #}
+    <input type="search" id="task-search" class="task-search" placeholder="Search tasks..." aria-label="Search tasks">
+
     {# Filter tabs. The numbers in the spans are filled in by tasks.js #}
     <div class="task-filters">
         <a href="#" class="task-filter task-filter--active" data-filter="all">

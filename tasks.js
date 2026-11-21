@@ -95,13 +95,54 @@ document.addEventListener('click', function (event) {
 // Filter tabs (Tasks page only)
 var currentFilter = 'all';
 
-// Shows only the tasks with the chosen status and marks the active tab
+// Ids of the tasks that match the search, or null when not searching
+var searchIds = null;
+
+// Search box (Tasks page only)
+var searchBox = document.getElementById('task-search');
+var searchTimer;
+
+if (searchBox) {
+    searchBox.addEventListener('input', function () {
+        // Wait until the user stops typing so not every letter sends a request
+        clearTimeout(searchTimer);
+        searchTimer = setTimeout(searchTasks, 300);
+    });
+}
+
+// Asks the server which tasks match the text in the search box
+function searchTasks() {
+    var text = searchBox.value.trim();
+
+    // Empty search: show every task again
+    if (text === '') {
+        searchIds = null;
+        applyFilter();
+        return;
+    }
+
+    fetch('search_tasks.php?q=' + encodeURIComponent(text))
+        .then(function (response) { return response.json(); })
+        .then(function (ids) {
+            // Ignore old answers if the text changed while waiting
+            if (searchBox.value.trim() !== text) {
+                return;
+            }
+            // data-id is text, so turn the numbers into text too
+            searchIds = ids.map(String);
+            applyFilter();
+        });
+}
+
+// Shows only the tasks with the chosen status (and search) and marks the active tab
 function applyFilter() {
     var items = document.querySelectorAll('.todo-item');
     var shown = 0;
 
     items.forEach(function (item) {
-        var visible = currentFilter === 'all' || item.dataset.status === currentFilter;
+        var matchesTab = currentFilter === 'all' || item.dataset.status === currentFilter;
+        var matchesSearch = searchIds === null || searchIds.indexOf(item.dataset.id) !== -1;
+        var visible = matchesTab && matchesSearch;
         item.style.display = visible ? '' : 'none';
         if (visible) {
             shown++;
