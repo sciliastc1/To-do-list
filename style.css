@@ -111,6 +111,14 @@ textarea:focus-visible {
     transition: background-color var(--ease), color var(--ease);
 }
 
+/* Logo link keeps the logo's own look instead of the nav link style */
+.logo a {
+    color: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    padding: 0;
+}
+
 .navbar_links a:hover {
     background-color: var(--surface-hover);
     color: var(--text);
