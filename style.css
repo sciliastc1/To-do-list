@@ -1,19 +1,19 @@
 /* Task Flow — clean, minimal SaaS dashboard theme (light, WCAG AA contrast) */
 
 :root {
-    --bg: #f8fafc;
+    --bg: #f5f8ff;             /* very light blue page background */
     --surface: #ffffff;
     --surface-raised: #ffffff;
-    --surface-hover: #f1f5f9;
+    --surface-hover: #eef3ff;
     --text: #0f172a;
     --muted: #475569;          /* 7.5:1 on white */
     --subtle: #64748b;         /* 4.8:1 on white, for done items */
     --border: #e2e8f0;
     --border-strong: #cbd5e1;
 
-    --primary: #0f766e;        /* white text on this is 5.5:1 */
-    --primary-hover: #115e59;
-    --primary-tint: #ccfbf1;
+    --primary: #1d4ed8;        /* blue, white text on this is 6.7:1 */
+    --primary-hover: #1e40af;
+    --primary-tint: #dbeafe;
 
     --danger: #b91c1c;
     --danger-tint: #fee2e2;
@@ -26,7 +26,7 @@
     --radius-sm: 8px;
     --shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
     --shadow-hover: 0 4px 12px rgba(15, 23, 42, 0.08);
-    --ring: 0 0 0 3px rgba(15, 118, 110, 0.35);
+    --ring: 0 0 0 3px rgba(29, 78, 216, 0.35);
     --ease: 180ms ease;
 }
 
