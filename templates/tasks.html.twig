@@ -13,6 +13,25 @@
     {# Search box. tasks.js asks search_tasks.php which tasks match #}
     <input type="search" id="task-search" class="task-search" placeholder="Search tasks..." aria-label="Search tasks">
 
+    {# Extra search criteria. They are combined with the text and the status tab,
+       so e.g. "high priority + in progress + due this week" works #}
+    <div class="search-options">
+        <label for="search-priority">Priority
+            <select id="search-priority" class="task-search">
+                <option value="">Any</option>
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+            </select>
+        </label>
+        <label for="search-due-from">Due from
+            <input type="date" id="search-due-from" class="task-search">
+        </label>
+        <label for="search-due-to">Due to
+            <input type="date" id="search-due-to" class="task-search">
+        </label>
+    </div>
+
     {# Filter tabs. The numbers in the spans are filled in by tasks.js #}
     <div class="task-filters">
         <a href="#" class="task-filter task-filter--active" data-filter="all">

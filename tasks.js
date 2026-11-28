@@ -88,7 +88,8 @@ document.addEventListener('click', function (event) {
     if (tab) {
         event.preventDefault();
         currentFilter = tab.dataset.filter;
-        applyFilter();
+        // The status is one of the search criteria, so search again
+        searchTasks();
     }
 });
 
@@ -98,8 +99,11 @@ var currentFilter = 'all';
 // Ids of the tasks that match the search, or null when not searching
 var searchIds = null;
 
-// Search box (Tasks page only)
-var searchBox = document.getElementById('task-search');
+// Search fields (Tasks page only)
+var searchBox      = document.getElementById('task-search');
+var searchPriority = document.getElementById('search-priority');
+var searchDueFrom  = document.getElementById('search-due-from');
+var searchDueTo    = document.getElementById('search-due-to');
 var searchTimer;
 
 if (searchBox) {
@@ -108,24 +112,43 @@ if (searchBox) {
         clearTimeout(searchTimer);
         searchTimer = setTimeout(searchTasks, 300);
     });
+    // Dropdown and dates change in one go, so search straight away
+    [searchPriority, searchDueFrom, searchDueTo].forEach(function (field) {
+        field.addEventListener('change', searchTasks);
+    });
 }
 
-// Asks the server which tasks match the text in the search box
-function searchTasks() {
-    var text = searchBox.value.trim();
+// Collects every search criterion. Empty string means "not used".
+function getSearchCriteria() {
+    return {
+        q:        searchBox.value.trim(),
+        priority: searchPriority.value,
+        status:   currentFilter === 'all' ? '' : currentFilter,
+        due_from: searchDueFrom.value,
+        due_to:   searchDueTo.value
+    };
+}
 
-    // Empty search: show every task again
-    if (text === '') {
+// Asks the server which tasks match all the criteria together
+function searchTasks() {
+    var criteria = getSearchCriteria();
+
+    // Nothing filled in: show every task again without asking the server
+    var anyUsed = Object.values(criteria).some(function (value) { return value !== ''; });
+    if (!anyUsed) {
         searchIds = null;
         applyFilter();
         return;
     }
 
-    fetch('search_tasks.php?q=' + encodeURIComponent(text))
+    // URLSearchParams turns the object into q=...&priority=... and encodes it safely
+    var query = new URLSearchParams(criteria).toString();
+
+    fetch('search_tasks.php?' + query)
         .then(function (response) { return response.json(); })
         .then(function (ids) {
-            // Ignore old answers if the text changed while waiting
-            if (searchBox.value.trim() !== text) {
+            // Ignore old answers if a criterion changed while waiting
+            if (new URLSearchParams(getSearchCriteria()).toString() !== query) {
                 return;
             }
             // data-id is text, so turn the numbers into text too

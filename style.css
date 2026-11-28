@@ -464,6 +464,19 @@ textarea:focus-visible {
     box-shadow: var(--ring);
 }
 
+/* Priority and due date fields next to each other under the search box */
+.search-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.search-options label {
+    flex: 1;
+    min-width: 140px;
+    font-size: 0.9em;
+}
+
 .task-filters {
     display: flex;
     flex-wrap: wrap;
